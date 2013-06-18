@@ -1,7 +1,3 @@
-SSL
-
-เข้าใจแล้วครับ
-
 HTTPS
 http://ncs.msu.ac.th/archives/1041.html
 
