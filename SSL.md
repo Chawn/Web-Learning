@@ -17,7 +17,7 @@ http://qcmississippimud.com/blogger/wp-content/uploads/2011/02/525px-Public_key_
 Videos <br/>
 SSL :  http://www.youtube.com/watch?v=SJJmoDZ3il8 <br/>
 How SSL Work : http://www.youtube.com/watch?v=iQsKdtjwtYI <br/>
-Check Certificate : http://www.youtube.com/watch?v=EA-QaHcp0Ag
+Check Certificate : http://www.youtube.com/watch?v=EA-QaHcp0Ag <br/>
 Key :  http://www.youtube.com/watch?v=CR8ZFRVmQLg <br/>
 Security+ HTTPS and SSL : http://www.youtube.com/watch?v=JjMfuJOnHzc <br/>
-Encryption : http://www.youtube.com/watch?v=wI_ayBuNz1M
+Encryption : http://www.youtube.com/watch?v=wI_ayBuNz1M <br/>
