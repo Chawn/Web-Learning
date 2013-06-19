@@ -16,3 +16,4 @@ http://qcmississippimud.com/blogger/wp-content/uploads/2011/02/525px-Public_key_
 Videos <br/>
 SSL :  http://www.youtube.com/watch?v=SJJmoDZ3il8 <br/>
 Key :  http://www.youtube.com/watch?v=CR8ZFRVmQLg <br/>
+Security+ HTTPS and SSL : http://www.youtube.com/watch?v=JjMfuJOnHzc <br/>
