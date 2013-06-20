@@ -1,6 +1,6 @@
 <html>
 <head>
-  <meta charset="utf-8">
+	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	
 	<!--<link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;lang=en" rel="stylesheet"> -->
@@ -20,19 +20,13 @@
 		allcheck = "";
 		$(document).ready(function(){
 			$(".check-field").change(function(){
-				$(this).toggleClass('checked') ;
-				classname = $(this).attr('class') ;
-				if(classname!=''){
+				$(this).toggleClass("checked") ;
+
+				if($(this).hasClass("checked")){
 					allcheck = allcheck + $(this).val()+"<br/>";
-				}else {		
-					
 				}
 				$(".field-selected").html(allcheck);
-				
-				
 			})
-
-			
 		})
 
 
@@ -217,11 +211,3 @@
 	</div>
 </body>
 </html>
-
-<script language="javascript">
-function xxx()
-{
-	alert(getSelectedValue(document.all["fieldname"));
-}
-
-</script>
