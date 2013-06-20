@@ -1,0 +1,227 @@
+<html>
+<head>
+  <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	
+	<!--<link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;lang=en" rel="stylesheet"> -->
+	<title>TRUE | Custom Dashboard</title>
+	<meta name="description" content="TRUE Information Technology | Security Team">
+	<meta name="author" content="Chawput Nawakalanyu">
+	<link rel="stylesheet" type="text/css" media="screen" href="style.css">
+	<script type="text/javascript" src="jquery-lib.js"></script>
+	<script>
+		function getField(d){
+			$(".fieldname-list").load('getdb.asp?t='+d);			
+		}
+		$(".table-link").click(function(){
+			$(this).css("background-color","red");
+		})
+		
+		allcheck = "";
+		$(document).ready(function(){
+			$(".check-field").change(function(){
+				$(this).toggleClass('checked') ;
+				classname = $(this).attr('class') ;
+				if(classname!=''){
+					allcheck = allcheck + $(this).val()+"<br/>";
+				}else {		
+					
+				}
+				$(".field-selected").html(allcheck);
+				
+				
+			})
+
+			
+		})
+
+
+	</script>
+</head>
+<body>
+	<%
+		Set conn = CreateObject("ADODB.connection")
+		conn.Open "Provider=SQLOLEDB; Data Source=DBSYSLOG; Initial Catalog=SecurityDB; User Id=security; Password=itmansuperman"
+		t=0
+		Dim table(6)
+		table(0) =  "dashboard_passwd"
+		table(1) =  "dashboard_group"
+		table(2) =  "dashboard_passwd-sa"
+		table(3) =  "dashboard_lsuser"
+		table(4) =  "dashboard_lsuser-c"
+		table(5) =  "dashboard_shadow"
+		
+		If request.querystring("t")<>"" Then
+			tablename = table(request.querystring("t"))
+			tt = request.querystring("t")
+		Else
+			tablename = table(0)
+			tt = 0
+		End IF
+			
+		function from_unix_timestamp(s)
+			from_unix_timestamp = DateAdd("s", s, "01/01/1970 00:00:00")
+		end Function
+
+	strSQL = "SELECT * FROM ["&tablename&"]"  
+		Set objRec = Server.CreateObject("ADODB.Recordset")  
+		objRec.Open strSQL, Conn, 1,3  
+
+
+	ishavesf = False
+	se=""
+	fi=""
+	If request.querystring("search")<>"" AND request.querystring("fieldname")<>"" Then
+		se = request.querystring("search")
+		fi = request.querystring("fieldname")
+
+		SQL="SELECT * from ["& tablename &"] " &_
+			"WHERE UPPER("&fi&") LIKE UPPER('"&se&"%') "&_
+			"ORDER BY platform"
+		Set rs=conn.execute(SQL)
+		ishavesf = true
+	Else
+		SQL="select * from ["& tablename &"]"
+		Set rs=conn.execute(SQL)
+	End If
+
+	
+	%>
+
+	<div id="page">
+		<div id="header">
+			<div id="headline">
+				<div id="banner">
+					<div class="logo">
+						<img src="img/true-logo.png" width="80px" height="27px" />
+					</div>
+					
+					
+				</div>
+				<div id="tool">
+					<form name="searchform" action="" method="request">
+						<select name="fieldname" id="fieldname" onchange="getSelectedValue(this)"> 
+							<%
+								If ishavesf<>true Then
+									Response.write "<option value=''>Search field:</option>"
+									For Each arrField In objRec.Fields  
+										Response.write "<option value='" & arrField.Name &"'>" & arrField.Name & "</option>"
+									Next 
+								Else
+									%>
+									<option value='<% response.write fi %>'><% response.write fi %></option>
+									<%
+									For Each arrField In objRec.Fields  
+										If arrField.Name<>fi then
+											Response.write "<option value='" & arrField.Name &"'>" & arrField.Name & "</option>"
+										End if
+									Next 
+								End if
+									%>
+						</select>
+							<input type="text" name="search" id="search" class="search" value="<%response.write se%>">
+							<input type="hidden" name="t" value="<%response.write tt%>" >
+							<input type="submit" value="Search" class="bt-black">
+					</form>
+					<button class="bt-red" onclick="window.location.href='index.asp'">Home</button>
+				</div>
+			</div>
+		</div>
+		<div id="content">
+		<center><h1>Customize Fields & Tables</h1></center>
+			<div id="custom">
+				<div id="content-left">
+					<div class="table-custom">
+						<table cellpadding="0" cellspacing="0">
+							<thead>
+								<tr>
+									<th>Tables</th>
+									<th>Fields</th>
+								</tr>
+							</thead>
+							<tbody>
+								<%
+								Dim tname(6)
+								tname(0) =  "passwd"
+								tname(1) =  "group"
+								tname(2) =  "passwd-sa"
+								tname(3) =  "lsuser"
+								tname(4) =  "lsuser-c"
+								tname(5) =  "shadow"
+								
+								For it=0 to UBound(tname)-1
+									strSQL = "SELECT * FROM [dashboard_"&tname(it)&"]"
+									Set objRec = Server.CreateObject("ADODB.Recordset")  
+									objRec.Open strSQL, Conn, 1,3
+								%>
+									<tr>
+										<td>
+											<a href='#' class='table-link'><% response.write tname(it) %></a>
+										</td>
+										<td>
+											<form>
+												<ul>
+													<li><input type='button' class='checkall' value='check all'></li>
+													<%
+													For Each arrField In objRec.Fields
+														response.write "<li><label>"
+														response.write "<input class='check-field'  name='check-field' type='checkbox' value='"&arrField.Name&"|"& table(it)&"'/>"& arrField.Name
+														response.write "</label></li>"
+													Next
+													%>
+												</ul>
+											</form>
+										</td>
+									</tr>
+								<%
+								Next 
+								%>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				
+				<!--
+				<div id="content-middle">
+					<button class="add-button" onclick="xxx()">Add >> </button>
+					<br/>
+					<button class="remove-button"> << Remove </button>
+				</div>
+				-->
+
+				<div id="content-right">
+					<div class="table-custom">
+						<table cellpadding="0" cellspacing="0">
+							<thead>
+								<tr>
+									<th>Field Selected</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										<ul class="field-selected">
+											<li>field value selected</li>
+										</ul>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="footer">
+			<h1>Copyright &copy; 2013 &middot; TRUE Co., Ltd.</h1>
+		</div>
+	</div>
+</body>
+</html>
+
+<script language="javascript">
+function xxx()
+{
+	alert(getSelectedValue(document.all["fieldname"));
+}
+
+</script>
